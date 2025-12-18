@@ -104,4 +104,46 @@ mbti_data = {
     "ENTJ": {
         "character": "나폴레옹 (Napoleon)",
         "book": "동물농장 (Animal Farm)",
-        "desc": "대담한 리더십과 전략적 사고를 가진 당신. 목표를 달성하기
+        "desc": "대담한 리더십과 전략적 사고를 가진 당신. 목표를 달성하기 위해 체계적으로 계획을 세우고 사람들을 지휘하는 타고난 사령관입니다.",
+        "color": "#88619A"
+    }
+}
+
+# --- UI 구현 ---
+
+st.title("📚 나의 문학적 도플갱어 찾기")
+st.markdown("당신의 **MBTI**를 선택하면, 세계 문학 속에서 당신과 가장 닮은 등장인물을 찾아드립니다.")
+
+st.write("---")
+
+# 1. 사용자 입력 (MBTI 선택)
+col1, col2 = st.columns([1, 2])
+
+with col1:
+    st.markdown("### MBTI 선택")
+    mbti_list = list(mbti_data.keys())
+    selected_mbti = st.selectbox("당신의 유형을 알려주세요:", mbti_list)
+
+# 선택된 데이터 가져오기
+result = mbti_data[selected_mbti]
+
+# 이미지 URL 생성 (플레이스홀더 서비스 사용 - 별도 파일 업로드 불필요)
+# 책 제목의 공백을 '+'로 치환하여 URL 생성
+safe_title = result['book'].split('(')[0].strip().replace(" ", "+")
+image_url = f"https://placehold.co/400x600/png?text={safe_title}&font=roboto"
+
+# 2. 결과 출력
+with col2:
+    st.markdown(f"### 결과: {selected_mbti}")
+    
+    # 카드 형태의 디자인
+    st.success(f"**{result['character']}**")
+    st.caption(f"출처: {result['book']}")
+    
+    st.image(image_url, caption=f"{result['book']} 표지", use_container_width=True)
+    
+    st.markdown("#### 💡 추천 이유")
+    st.info(result['desc'])
+
+st.write("---")
+st.markdown("Created with ❤️ by Streamlit | [이미지 출처: Generated Placeholder]")
